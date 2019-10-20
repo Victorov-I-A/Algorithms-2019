@@ -2,6 +2,9 @@
 
 package lesson2
 
+import java.lang.Math.sqrt
+import java.lang.StringBuilder
+
 /**
  * Получение наибольшей прибыли (она же -- поиск максимального подмассива)
  * Простая
@@ -79,8 +82,14 @@ fun optimizeBuyAndSell(inputName: String): Pair<Int, Int> {
  * Общий комментарий: решение из Википедии для этой задачи принимается,
  * но приветствуется попытка решить её самостоятельно.
  */
+//Трудоёмкость: O(N); Затраты памяти: O(1), N - входное число menNumber
 fun josephTask(menNumber: Int, choiceInterval: Int): Int {
-    TODO()
+    var last = 0
+
+    for (i in 1..menNumber)
+        last = (last + choiceInterval) % i
+
+    return last + 1
 }
 
 /**
@@ -108,8 +117,22 @@ fun longestCommonSubstring(first: String, second: String): String {
  * Справка: простым считается число, которое делится нацело только на 1 и на себя.
  * Единица простым числом не считается.
  */
+//Трудоёмкость: O(N*sqrt(N)); Затраты памяти: O(1), N - входное число limit
 fun calcPrimesNumber(limit: Int): Int {
-    TODO()
+    if (limit <= 1) return 0
+    if (limit == 2) return 1
+
+    var number = limit - 1
+
+    for (i in 3..limit) {
+        for (j in 2..sqrt(i.toDouble()).toInt()) {
+            if (i % j == 0) {
+                number--
+                break
+            }
+        }
+    }
+    return number
 }
 
 /**

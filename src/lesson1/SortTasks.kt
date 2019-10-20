@@ -2,6 +2,8 @@
 
 package lesson1
 
+import java.io.File
+
 /**
  * Сортировка времён
  *
@@ -96,8 +98,23 @@ fun sortAddresses(inputName: String, outputName: String) {
  * 99.5
  * 121.3
  */
+
+//Трудоёмкость: O(N); Затраты памяти: O(N), N - кол-во строк во входном файле inputName
 fun sortTemperatures(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    val list = mutableListOf<Int>()
+
+    for (line in File(inputName).bufferedReader().readLines()) {
+        list.add(((line.toDouble() * 10).toInt() + 2730))
+    }
+
+    val sortArray = countingSort(list.toIntArray(), 7730)
+
+    for (element in sortArray) {
+        writer.write(((element - 2730).toDouble() / 10).toString())
+        writer.newLine()
+    }
+    writer.close()
 }
 
 /**
@@ -129,8 +146,45 @@ fun sortTemperatures(inputName: String, outputName: String) {
  * 2
  * 2
  */
+//Трудоёмкость: O(N); Затраты памяти: O(N), N - кол-во строк во входном файле inputName
 fun sortSequence(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    val list = mutableListOf<Int>()
+
+    for (line in File(inputName).bufferedReader().readLines()) {
+        list.add(line.toInt())
+    }
+
+    val array = list.toIntArray()
+    val count = mutableMapOf<Int, Int>()
+
+    for (element in array) {
+        if (count.containsKey(element))
+            count[element] = count[element]!! + 1
+        else
+            count[element] = 1
+    }
+
+    val a = count.toSortedMap().values.toList()
+    val b = count.toSortedMap().keys.toList()
+    val lastElements = b[a.indexOfFirst { it == a.max() }]
+
+    for (element in array) {
+        if (element != lastElements) {
+            writer.write(element.toString())
+            writer.newLine()
+        }
+    }
+
+    var i = count[lastElements]
+
+    while (i!! > 0) {
+        writer.write(lastElements.toString())
+        writer.newLine()
+        i--
+    }
+
+    writer.close()
 }
 
 /**
