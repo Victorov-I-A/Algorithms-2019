@@ -3,7 +3,6 @@
 package lesson2
 
 import java.lang.Math.sqrt
-import java.lang.StringBuilder
 
 /**
  * Получение наибольшей прибыли (она же -- поиск максимального подмассива)
@@ -117,7 +116,7 @@ fun longestCommonSubstring(first: String, second: String): String {
  * Справка: простым считается число, которое делится нацело только на 1 и на себя.
  * Единица простым числом не считается.
  */
-//Трудоёмкость: O(N*sqrt(N)); Затраты памяти: O(1), N - входное число limit
+//Трудоёмкость: O(N^(3/2)); Затраты памяти: O(1), N - входное число limit
 fun calcPrimesNumber(limit: Int): Int {
     if (limit <= 1) return 0
     if (limit == 2) return 1

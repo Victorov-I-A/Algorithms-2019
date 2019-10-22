@@ -146,7 +146,8 @@ fun sortTemperatures(inputName: String, outputName: String) {
  * 2
  * 2
  */
-//Трудоёмкость: O(N); Затраты памяти: O(N), N - кол-во строк во входном файле inputName
+
+//Трудоёмкость: O(N*logN); Затраты памяти: O(N), N - кол-во строк во входном файле inputName
 fun sortSequence(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     val list = mutableListOf<Int>()
@@ -156,32 +157,43 @@ fun sortSequence(inputName: String, outputName: String) {
     }
 
     val array = list.toIntArray()
-    val count = mutableMapOf<Int, Int>()
+    val sortArray = array.sortedArray()
 
-    for (element in array) {
-        if (count.containsKey(element))
-            count[element] = count[element]!! + 1
-        else
-            count[element] = 1
+    var current = 1
+    var past = 0
+    var lastElement = sortArray[0]
+
+    if (sortArray.size > 1)
+        for (i in 1 until sortArray.size) {
+            if (sortArray[i] == sortArray[i - 1]) {
+                current++
+            } else {
+                if (current > past) {
+                    past = current
+                    current = 1
+                    lastElement = sortArray[i - 1]
+                } else {
+                    current = 1
+                }
+            }
+        }
+
+    if (current > past) {
+        lastElement = sortArray[sortArray.size - 1]
+        past = current
     }
 
-    val a = count.toSortedMap().values.toList()
-    val b = count.toSortedMap().keys.toList()
-    val lastElements = b[a.indexOfFirst { it == a.max() }]
-
     for (element in array) {
-        if (element != lastElements) {
+        if (element != lastElement) {
             writer.write(element.toString())
             writer.newLine()
         }
     }
 
-    var i = count[lastElements]
-
-    while (i!! > 0) {
-        writer.write(lastElements.toString())
+    while (past > 0) {
+        writer.write(lastElement.toString())
         writer.newLine()
-        i--
+        past--
     }
 
     writer.close()
