@@ -102,8 +102,24 @@ fun josephTask(menNumber: Int, choiceInterval: Int): Int {
  * Если имеется несколько самых длинных общих подстрок одной длины,
  * вернуть ту из них, которая встречается раньше в строке first.
  */
+//Трудоёмкость: O(N^2); Ресурсоёмкость: O(1), N - размер строки first
 fun longestCommonSubstring(first: String, second: String): String {
-    TODO()
+    var past = StringBuilder()
+    var current = StringBuilder()
+
+    for (element in first) {
+        if (current.length > past.length) {
+            past.clear()
+            past.append(current)
+        }
+
+        current.append(element)
+
+        if (!second.contains(current, ignoreCase = false)) {
+            current.deleteCharAt(0)
+        }
+    }
+    return past.toString()
 }
 
 /**
