@@ -118,6 +118,34 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
+        try {
+            sortTemperatures("input/temp_in2.txt", "temp.txt")
+            assertFileContent(
+                "temp.txt",
+                """
+                    500.0
+                """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            sortTemperatures("input/temp_in3.txt", "temp.txt")
+            assertFileContent(
+                "temp.txt",
+                """
+                    -1.0
+                    -1.0
+                    -1.0
+                    -1.0
+                    1.0
+                    1.0
+                    1.0
+                """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
 
         fun testGeneratedTemperatures(size: Int): PerfResult<Unit> {
             try {
@@ -272,6 +300,51 @@ abstract class AbstractTaskTests : AbstractFileTests() {
                         41
                         32
                         32
+                    """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            sortSequence("input/seq_in6.txt", "temp.txt")
+            assertFileContent(
+                "temp.txt",
+                """
+                        1
+                        1
+                        1
+                        2
+                        2
+                        2
+                        0
+                        0
+                        0
+                    """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            sortSequence("input/seq_in7.txt", "temp.txt")
+            assertFileContent(
+                "temp.txt",
+                """
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
+                        16
                     """.trimIndent()
             )
         } finally {

@@ -71,6 +71,8 @@ abstract class AbstractAlgorithmsTests {
             assertEquals(1, josephTask(menNumber, 2))
             menNumber *= 2
         }
+        assertEquals(2147483647, josephTask(2147483647, 1))
+        assertEquals(244872235, josephTask(2147483647, 2147483647))
     }
 
     fun longestCommonSubstring(longestCommonSubstring: (String, String) -> String) {
@@ -144,6 +146,7 @@ abstract class AbstractAlgorithmsTests {
         assertEquals(148933, calcPrimesNumber(2000000))
         assertEquals(348513, calcPrimesNumber(5000000))
         assertEquals(664579, calcPrimesNumber(10000000))
+        assertEquals(21, calcPrimesNumber(77))
     }
 
     fun baldaSearcher(baldaSearcher: (String, Set<String>) -> Set<String>) {

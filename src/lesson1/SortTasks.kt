@@ -99,7 +99,7 @@ fun sortAddresses(inputName: String, outputName: String) {
  * 121.3
  */
 
-//Трудоёмкость: O(N); Затраты памяти: O(N), N - кол-во строк во входном файле inputName
+//Трудоёмкость: O(N); Ресурсоёмкость: O(N), N - кол-во строк во входном файле inputName
 fun sortTemperatures(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     val list = mutableListOf<Int>()
@@ -147,7 +147,7 @@ fun sortTemperatures(inputName: String, outputName: String) {
  * 2
  */
 
-//Трудоёмкость: O(N*logN); Затраты памяти: O(N), N - кол-во строк во входном файле inputName
+//Трудоёмкость: O(N*logN); Ресурсоёмкость: O(N), N - кол-во строк во входном файле inputName
 fun sortSequence(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     val list = mutableListOf<Int>()
@@ -163,7 +163,7 @@ fun sortSequence(inputName: String, outputName: String) {
     var past = 0
     var lastElement = sortArray[0]
 
-    if (sortArray.size > 1)
+    if (sortArray.size > 1) {
         for (i in 1 until sortArray.size) {
             if (sortArray[i] == sortArray[i - 1]) {
                 current++
@@ -178,9 +178,10 @@ fun sortSequence(inputName: String, outputName: String) {
             }
         }
 
-    if (current > past) {
-        lastElement = sortArray[sortArray.size - 1]
-        past = current
+        if (current > past) {
+            lastElement = sortArray[sortArray.size - 1]
+            past = current
+        }
     }
 
     for (element in array) {

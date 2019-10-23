@@ -81,7 +81,7 @@ fun optimizeBuyAndSell(inputName: String): Pair<Int, Int> {
  * Общий комментарий: решение из Википедии для этой задачи принимается,
  * но приветствуется попытка решить её самостоятельно.
  */
-//Трудоёмкость: O(N); Затраты памяти: O(1), N - входное число menNumber
+//Трудоёмкость: O(N); Ресурсоёмкость: O(1), N - входное число menNumber
 fun josephTask(menNumber: Int, choiceInterval: Int): Int {
     var last = 0
 
@@ -116,7 +116,7 @@ fun longestCommonSubstring(first: String, second: String): String {
  * Справка: простым считается число, которое делится нацело только на 1 и на себя.
  * Единица простым числом не считается.
  */
-//Трудоёмкость: O(N^(3/2)); Затраты памяти: O(1), N - входное число limit
+//Трудоёмкость: O(N^(3/2)); Ресурсоёмкость: O(1), N - входное число limit
 fun calcPrimesNumber(limit: Int): Int {
     if (limit <= 1) return 0
     if (limit == 2) return 1
