@@ -71,11 +71,132 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     /**
      * Удаление элемента в дереве
      * Средняя
+     *
+     * Трудоёмкость в худшем случае: O(N); Трудоёмкость в лучшем случае: O(logN); Ресурсоёмкость: O(1)
      */
     @Override
     public boolean remove(Object o) {
-        // TODO
-        throw new NotImplementedError();
+        if (root == null) return false;
+        return uniRemove((T) o);
+    }
+
+
+    private boolean uniRemove (T number) {
+        if (root.value.compareTo(number) == 0) { //обрабатываем случай, когда необходимо заменить корневой узел
+            //обрабатываем случай, когда у удаляемого нет потомков
+            if (root.left == null && root.right == null)
+                root = null;
+                //обрабатываем случай, когда есть левый наследник
+            else if (root.left != null) {
+                Node<T> max = maximum(root.left);
+
+                if (max == root.left) {
+                    max.right = root.right;
+                    root = max;
+                } else {
+                    Node<T> parentMax = searchParent(root, max.value);
+
+                    parentMax.right = max.left;
+                    max.left = root.left;
+                    max.right = root.right;
+                    root = max;
+                }
+            }  //обрабатываем случай, когда нет левого потомка
+            else {
+                Node<T> min = minimum(root.right);
+
+                if (min == root.right) {
+                    root = min;
+                } else {
+                    Node<T> parentMin = searchParent(root, min.value);
+
+                    parentMin.left = min.right;
+                    min.right = root.right;
+                    root = min;
+                }
+            }
+            size--;
+            return true;
+        } else { //обрабатываем случай, искомым узлом является не корень
+            Node<T> parent = searchParent(root, number);
+            if (parent == null)
+                return false;
+            Node<T> shifted = find(number);
+            //обрабатываем случай, когда у удаляемого нет потомков
+            if (shifted.left == null && shifted.right == null) {
+                if (parent.left != null && parent.value.compareTo(shifted.value) > 0)
+                    parent.left = null;
+                else
+                    parent.right = null;
+            } //обрабатываем случай, когда есть левый наследник
+            else if (shifted.left != null) {
+                Node<T> max = maximum(shifted.left);
+
+                if (max == shifted.left) {
+                    max.right = shifted.right;
+                } else {
+                    Node<T> parentMax = searchParent(shifted, max.value);
+
+                    parentMax.right = max.left;
+                    max.left = shifted.left;
+                    max.right = shifted.right;
+                }
+                if (parent.value.compareTo(max.value) > 0)
+                    parent.left = max;
+                else
+                    parent.right = max;
+            }  //обрабатываем случай, когда нет левого потомка
+            else {
+                Node<T> min = minimum(shifted.right);
+
+                if (min != shifted.right) {
+                    Node<T> parentMin = searchParent(shifted, min.value);
+
+                    if (shifted != parentMin) {
+                        parentMin.left = min.right;
+                        min.right = shifted.right;
+                    }
+                }
+                if (parent.value.compareTo(min.value) > 0)
+                    parent.left = min;
+                else
+                    parent.right = min;
+            }
+        }
+        size--;
+        return true;
+    }
+
+    private Node<T> minimum(Node<T> node) {
+        if (node.left == null)
+            return node;
+        else
+            return minimum(node.left);
+    }
+
+    private Node<T> maximum(Node<T> node) {
+        if (node.right == null)
+            return node;
+        else
+            return maximum(node.right);
+    }
+
+    private Node<T> searchParent(Node<T> node, T number) {
+        int comparison = number.compareTo(node.value);
+
+        if (node.right != null && comparison >= 0) {
+            if (node.right.value.compareTo(number) == 0 ) {
+                return node;
+            }
+            else return searchParent(node.right, number);
+        }
+        if (node.left != null && comparison <= 0) {
+            if (node.left.value.compareTo(number) == 0 ) {
+                return node;
+            }
+            else return searchParent(node.left, number);
+        }
+        return null;
     }
 
     @Override
@@ -107,39 +228,66 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     }
 
     public class BinaryTreeIterator implements Iterator<T> {
+        private Node<T> current = null;
 
-        private BinaryTreeIterator() {
-            // Добавьте сюда инициализацию, если она необходима
-        }
+        private BinaryTreeIterator() {}
 
         /**
          * Проверка наличия следующего элемента
          * Средняя
+         *
+         * Трудоёмкость в худшем случае: O(N); Трудоёмкость в лучшем случае: O(logN); Ресурсоёмкость: O(1)
          */
         @Override
         public boolean hasNext() {
-            // TODO
-            throw new NotImplementedError();
+            return searchNext() != null;
         }
 
         /**
          * Поиск следующего элемента
          * Средняя
+         *
+         * Трудоёмкость в худшем случае: O(N); Трудоёмкость в лучшем случае: O(logN); Ресурсоёмкость: O(1)
          */
         @Override
         public T next() {
-            // TODO
-            throw new NotImplementedError();
+            current = searchNext();
+
+            if (current != null)
+                return current.value;
+            else
+                return null;
+        }
+
+        private Node<T> searchNext() {
+            if (root == null)
+                return null;
+
+            if (current == null)
+                return minimum(root);
+
+            Node<T> next = null;
+            Node<T> node = root;
+
+            while (node != null) {
+                if (node.value.compareTo(current.value) > 0) {
+                    next = node;
+                    node = node.left;
+                } else
+                    node = node.right;
+
+            } return next;
         }
 
         /**
          * Удаление следующего элемента
          * Сложная
+         *
+         * Трудоёмкость в худшем случае: O(N); Трудоёмкость в лучшем случае: O(logN); Ресурсоёмкость: O(1)
          */
         @Override
         public void remove() {
-            // TODO
-            throw new NotImplementedError();
+            uniRemove(current.value);
         }
     }
 
